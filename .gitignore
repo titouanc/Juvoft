@@ -1,0 +1,7 @@
+*.sqlite3
+.DS_Store
+.bundle
+.sass-cache
+*.wav
+*.mp3
+*.ogg

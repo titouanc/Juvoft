@@ -1,0 +1,5 @@
+%table.playlist_view
+	- @musics.each_with_index do |m, i|
+		- @music = m
+		- @class = i.odd? ? 'blue_row' : 'white_row'
+		= haml :"partials/music_table", :layout => false

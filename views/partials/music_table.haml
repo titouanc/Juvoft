@@ -1,0 +1,9 @@
+- url = "http://#{request.host_with_port}/music/#{@music.id}/audio"
+%tr{:id => "music_row_#{@music.id}", :onclick=>'javascript: playme(this, "'+url+'");', :class => @class}
+	%td{:style => 'display:none;', :id => "music_tags_#{@music.id}"}
+		= @music.tags.map{|t| t.name}*','
+	%td= @music.id
+	%td= @music.title
+	%td= @music.artist
+	%td= @music.album
+	%td= url

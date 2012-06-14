@@ -1,0 +1,91 @@
+!!! 5
+%html
+	%head
+		%title Ma Super station musicale en mousse
+		%link{:rel => "stylesheet", :media => "screen", :type => "text/css", :title => "Style", :href => "/style/base"}
+		:javascript
+			var selected_pl = null;
+			var current_song_view = null;
+			var current_song_source = null;
+			
+			var select_pl = function(element){
+				if (selected_pl) selected_pl.setAttribute('class', '');
+				selected_pl = element;
+				element.setAttribute('class', 'selection');
+			}
+		
+		
+			var setDisplay = function(title, artist, album){
+				var player = document.getElementById('player');
+				player.removechilds();
+				
+				var title_label = document.createElement('h1');
+				title_lable.appendChild(document.createTextNode());
+				var artist_label = docu
+			}
+			
+			var playme = function(element, url){
+				if (current_song_view) current_song_view.setAttribute('class', '');
+				current_song_view = element;
+				element.setAttribute('class', 'selection');
+				element.setAttribute('style', 'width: 100%');
+				
+				player = document.getElementById('audio_player');
+				if (current_song_source) player.removeChild(current_song_source);
+				source = document.createElement('source');
+				source.setAttribute('src', url);
+				if (/\.ogg$/i.test(url))
+					source.setAttribute('type', 'audio/ogg');
+				else if (/\.mp3/i.test(url))
+					source.setAttribute('type', 'audio/mp3');
+				player.appendChild(source);
+				current_song_source = source;
+			}
+			
+			var player =  document.getElementById('audio_player');
+			
+			var player_play = function(element) {
+				if (player.paused){
+					element.src = '/images/btn-pause.gif';
+					player.play();
+				}	else {
+					element.src = '/images/btn-play.gif';
+					player.pause();
+				}
+			}
+	%body
+		#global
+			#header
+				%div{:style => 'float: left;'}
+				%h1 jUvoft
+				#controls
+					%input.control_button{:type => 'image', :src => '/images/btn-previous.gif'}
+					%input.control_button{:type => 'image', :src => '/images/btn-play.gif', :onclick => 'javascript: player_play(this);'}
+					%input.control_button{:type => 'image', :src => '/images/btn-next.gif'}
+				#volume
+					%img{:src => 'http://192.168.1.5/juvoft/images/bg-volume.gif'}
+				#player
+					%audio#audio_player	Player HTML5 non supporté
+				#search
+					%img{:src => 'http://192.168.1.5/juvoft/images/btn-search.gif', :alt => ''}
+					%input.search_field{:type => 'text'}
+			#body
+				#navigation
+					%h1 Bibliothèques
+					-LIBRARIES.each do |lib|
+						%h2{:onclick => 'javascript: select_pl(this);'}= lib
+					%h1 Listes de lecture
+					-PLAYLISTS.each do |pl|
+						%h2{:onclick => 'javascript: select_pl(this);'}= pl
+				#content= yield
+			#footer="Footer "*10
+		:javascript
+			var adapt_content_height = function(){
+				var header = document.getElementById('header');
+				var footer = document.getElementById('footer');
+				var new_height = window.innerHeight - header.offsetHeight - footer.offsetHeight - 17;
+				document.getElementById('content').setAttribute('style', 'height: '+(new_height-10)+'px;');
+				document.getElementById('navigation').setAttribute('style', 'height: '+new_height+'px;');
+			}
+			adapt_content_height();
+			window.onresize = adapt_content_height;
